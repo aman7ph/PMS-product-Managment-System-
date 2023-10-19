@@ -84,5 +84,8 @@
 
     @media screen and (max-width: 450px) {
         width: 80%;
+        p {
+            font-size: 0.5rem;
+        }
     }
 }
