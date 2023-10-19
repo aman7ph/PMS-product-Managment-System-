@@ -1,12 +1,14 @@
 import React from 'react';
 import Nav from '../componetes/Nav';
 import Hero from '../componetes/Hero';
+import Footer from '../componetes/Footer';
 
 const HomePage = () => {
     return (
-        <div className="app__flex-top">
+        <div>
             <Nav />
             <Hero />
+            <Footer />
         </div>
     );
 };

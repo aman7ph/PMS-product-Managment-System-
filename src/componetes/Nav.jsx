@@ -14,7 +14,7 @@ const Nav = () => {
                 </Link>
             </div>
             <ul className="app__navbar-links">
-                {['about', 'login', 'signup'].map((el, index) => (
+                {['about', 'login'].map((el, index) => (
                     <li key={index} className="app__flex p-text">
                         <div />
                         <Link to={`/${el}`}>{el}</Link>
@@ -30,7 +30,7 @@ const Nav = () => {
                     >
                         <HiX onClick={() => setToggel(false)} />
                         <ul>
-                            {['about', 'login', 'signup'].map((el, index) => (
+                            {['about', 'login'].map((el, index) => (
                                 <li key={`index-${index}`}>
                                     <Link
                                         to={`/${el}`}

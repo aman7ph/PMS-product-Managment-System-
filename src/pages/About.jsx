@@ -1,10 +1,12 @@
 import React from 'react';
 import Nav from '../componetes/Nav';
+import AboutDetail from '../componetes/AboutDetail';
 
 const About = () => {
     return (
-        <div className="app__flex-top">
+        <div>
             <Nav />
+            <AboutDetail />
         </div>
     );
 };
