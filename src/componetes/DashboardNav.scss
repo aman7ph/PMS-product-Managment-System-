@@ -1,0 +1,37 @@
+.app__navbar {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    margin: 0 auto; /* Set left and right margins to auto */
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.app__nav-logout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    div {
+        width: 5px;
+        height: 5px;
+        background: transparent;
+        border-radius: 50%;
+        margin-bottom: 5px;
+    }
+
+    button {
+        border: none;
+        background: none;
+        cursor: pointer;
+
+        &:hover {
+            color: var(--secondary-color);
+        }
+    }
+    &:hover {
+        div {
+            background-color: var(--secondary-color);
+        }
+    }
+}
