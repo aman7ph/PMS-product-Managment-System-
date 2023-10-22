@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './ModalStyle.scss';
+import { Context } from '../Table';
+import { db } from '../../firebase';
+import { addDoc, collection } from 'firebase/firestore';
 
 const Edit = ({ show, crudNum, close }) => {
+    const [selectedProduct, setSelectedProduct] = useContext(Context);
+
+    function handleChange(event) {
+        const { name, value } = event.target;
+        setSelectedProduct((prevselectedProduct) => {
+            return {
+                ...prevselectedProduct,
+                [name]: value,
+            };
+        });
+    }
+
+    const handleUpdate = async (e) => {};
+
     return (
         <div>
             {show && crudNum === 3 ? (
@@ -14,15 +31,33 @@ const Edit = ({ show, crudNum, close }) => {
                             </button>
                         </div>
                         <div className="modal_content">
-                            <input type="text" placeholder="Product Name" />
-                            <input type="text" placeholder="Price" />
+                            <input
+                                type="text"
+                                placeholder="Product Name"
+                                onChange={handleChange}
+                                name="name"
+                                value={selectedProduct.name}
+                            />
+                            <input
+                                type="text"
+                                placeholder="Price"
+                                onChange={handleChange}
+                                name="price"
+                                value={selectedProduct.price}
+                            />
                             <input
                                 type="text"
                                 placeholder="Available Quantity"
+                                onChange={handleChange}
+                                name="quantity"
+                                value={selectedProduct.quantity}
                             />
                             <textarea
                                 type="text"
                                 placeholder="Product Description"
+                                onChange={handleChange}
+                                name="description"
+                                value={selectedProduct.description}
                             />
                         </div>
                         <div className=" modal_footer">
@@ -32,7 +67,9 @@ const Edit = ({ show, crudNum, close }) => {
                             >
                                 Cancel
                             </button>
-                            <button className="submit">Submit</button>
+                            <button className="submit" onClick={handleUpdate}>
+                                Submit
+                            </button>
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,16 @@
 import React from 'react';
 import './ModalStyle.scss';
+import { doc, deleteDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
 
-const Delete = ({ show, crudNum, close, ProductDelete }) => {
+const Delete = ({ show, crudNum, close, product }) => {
+    const product1 = product[0];
+
+    const handleDelete = async (id) => {
+        await deleteDoc(doc(db, 'productes', id));
+        close();
+    };
+
     return (
         <div>
             {show && crudNum === 4 ? (
@@ -27,7 +36,7 @@ const Delete = ({ show, crudNum, close, ProductDelete }) => {
                             </button>
                             <button
                                 className="submit"
-                                onClick={() => ProductDelete()}
+                                onClick={() => handleDelete(product1.id)}
                             >
                                 Continue
                             </button>

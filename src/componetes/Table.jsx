@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, createContext } from 'react';
 import { FaEdit } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md';
 import { BiDetail } from 'react-icons/bi';
@@ -11,19 +11,29 @@ import Detail from './Modal/Detail';
 import Edit from './Modal/Edit';
 import Delete from './Modal/Delete';
 
+export const Context = createContext();
+
 const Table = () => {
-    const [productId, setProductId] = useState('');
+    const [productId, setProductId] = useState('X73ONmeQh2ASw59snxRC');
+    const [selectedProduct, setSelectedProduct] = useState({});
     const [productData, setProductData] = useState([]);
     const [modal, setModal] = useState(false);
     const [crudNum, setCrudNum] = useState(0);
     const Toggle = () => setModal(!modal);
-
     const dbCollection = collection(db, 'productes');
 
-    const handleDelete = async () => {
-        await deleteDoc(doc(db, 'productes', productId));
-        Toggle();
-    };
+    console.log(productId);
+    useEffect(() => {
+        if (productId) {
+            const product = productData.find(
+                (product) => product.id === productId
+            );
+            setSelectedProduct(product);
+        } else {
+            // Handle the case when productId is not available or invalid
+            setSelectedProduct(null);
+        }
+    }, [productId, productData]);
 
     useEffect(
         () =>
@@ -118,7 +128,6 @@ const Table = () => {
                                                     Toggle();
                                                     setCrudNum(4);
                                                     setProductId(product.id);
-                                                    handleDelete();
                                                 }}
                                             >
                                                 <MdDeleteForever />
@@ -142,12 +151,21 @@ const Table = () => {
                     return product.id === productId;
                 })}
             />
-            <Edit show={modal} crudNum={crudNum} close={Toggle} />
+            <Context.Provider value={[selectedProduct, setSelectedProduct]}>
+                <Edit
+                    show={modal}
+                    crudNum={crudNum}
+                    close={Toggle}
+                    product={selectedProduct}
+                />
+            </Context.Provider>
             <Delete
                 show={modal}
                 crudNum={crudNum}
                 close={Toggle}
-                ProductDelete={handleDelete}
+                product={productData.filter((product) => {
+                    return product.id === productId;
+                })}
             />
         </div>
     );
