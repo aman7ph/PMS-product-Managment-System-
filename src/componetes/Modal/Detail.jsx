@@ -1,35 +1,45 @@
 import React from 'react';
 import './ModalStyle.scss';
 
-const Delete = ({ show, crudNum, close, ProductDelete }) => {
+const Detail = ({ show, crudNum, close, product }) => {
+    const product1 = product[0];
+
     return (
         <div>
-            {show && crudNum === 4 ? (
+            {show && crudNum === 2 ? (
                 <div className="modalContainer" onClick={() => close()}>
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
                         <div className="modal_header">
                             <h2 className="modal_header-title">
-                                Delete Product
+                                Product Detail
                             </h2>
                             <button className="close" onClick={() => close()}>
                                 <img src="x.svg" alt="close" />
                             </button>
                         </div>
                         <div className="modal_content">
-                            Are you shure you Want to delete this product ?
+                            <p>
+                                <strong>Name :</strong> {product1.name}
+                            </p>
+                            <p>
+                                <strong>Price :</strong>{' '}
+                                {`${product1.price}  birr`}
+                            </p>
+                            <p>
+                                <strong>Descriprion :</strong>
+                                {product1.description}
+                            </p>
+                            <p>
+                                <strong>Quantity in store :</strong>
+                                {product1.quantity}
+                            </p>
                         </div>
                         <div className=" modal_footer">
                             <button
                                 className="modal-close"
                                 onClick={() => close()}
                             >
-                                Cancel
-                            </button>
-                            <button
-                                className="submit"
-                                onClick={() => ProductDelete()}
-                            >
-                                Continue
+                                Close
                             </button>
                         </div>
                     </div>
@@ -41,4 +51,4 @@ const Delete = ({ show, crudNum, close, ProductDelete }) => {
     );
 };
 
-export default Delete;
+export default Detail;
