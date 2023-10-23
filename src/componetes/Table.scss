@@ -119,6 +119,9 @@ td button:nth-child(3) {
             }
         }
     }
+    @media screen and (max-width: 400px) {
+        height: 60vh;
+    }
 }
 
 ::placeholder {
