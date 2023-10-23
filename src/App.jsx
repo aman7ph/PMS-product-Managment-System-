@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './app.css';
 import About from './pages/About';
@@ -9,6 +9,14 @@ import { AuthContext } from './Context/AuthContext';
 
 const App = () => {
     const { currentUser } = useContext(AuthContext);
+
+    useEffect(() => {
+        window.onbeforeunload = function (event) {
+            if (event.type === 'beforeunload') {
+                localStorage.clear();
+            }
+        };
+    }, []);
 
     const RequiredAuth = ({ children }) => {
         return currentUser ? children : <Navigate to="/" />;
@@ -27,7 +35,10 @@ const App = () => {
                     }
                 />
                 <Route path="/about" element={<About />} />
-                <Route path="/login" element={<Login />} />
+                <Route
+                    path="/login"
+                    element={currentUser ? <Dashboard /> : <Login />}
+                />
             </Routes>
         </BrowserRouter>
     );

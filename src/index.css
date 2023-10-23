@@ -8,7 +8,8 @@
     --gray-color: #433b53; /* Medium gray for accents */
     --lighttGrey-color: #5f5d63; /* Gold for secondary elements */
     --btn-color: #7c70ff;
-
+    --available-color: #c8e6c9;
+    --unavailable-color: #ffcdd2;
     /* -moz-user-select: none; 
     -webkit-user-select: none;
     -ms-user-select: none; 

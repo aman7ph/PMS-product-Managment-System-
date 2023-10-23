@@ -10,6 +10,7 @@ const Add = ({ show, crudNum, close }) => {
         quantity: '',
         description: '',
     });
+    const [errors, setErrors] = useState({});
 
     const dbCollection = collection(db, 'productes');
 
@@ -21,14 +22,47 @@ const Add = ({ show, crudNum, close }) => {
                 [name]: value,
             };
         });
+
+        setErrors({
+            ...errors,
+            [name]: null,
+        });
     }
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        // Validation rules (you can customize these)
+        if (formData.name.trim() === '') {
+            newErrors.name = 'Product Name is required';
+        }
+
+        if (formData.price.trim() === '' || isNaN(formData.price)) {
+            newErrors.price = 'Price must be a number';
+        }
+
+        if (formData.quantity.trim() === '' || isNaN(formData.quantity)) {
+            newErrors.quantity = 'Quantity must be a number';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
     const handleAdd = async (e) => {
         e.preventDefault();
-        try {
-            await addDoc(dbCollection, formData);
-            close();
-        } catch (error) {}
+        if (validateForm()) {
+            try {
+                await addDoc(dbCollection, formData);
+                close();
+                setFormData({
+                    name: '',
+                    price: '',
+                    quantity: '',
+                    description: '',
+                });
+            } catch (error) {}
+        }
     };
 
     return (
@@ -50,6 +84,9 @@ const Add = ({ show, crudNum, close }) => {
                                 name="name"
                                 value={formData.name}
                             />
+                            {errors.name && (
+                                <div className="error">{errors.name}</div>
+                            )}
                             <input
                                 type="text"
                                 placeholder="Price"
@@ -57,6 +94,9 @@ const Add = ({ show, crudNum, close }) => {
                                 name="price"
                                 value={formData.price}
                             />
+                            {errors.price && (
+                                <div className="error">{errors.price}</div>
+                            )}
                             <input
                                 type="text"
                                 placeholder="Available Quantity"
@@ -64,6 +104,9 @@ const Add = ({ show, crudNum, close }) => {
                                 name="quantity"
                                 value={formData.quantity}
                             />
+                            {errors.quantity && (
+                                <div className="error">{errors.quantity}</div>
+                            )}
                             <textarea
                                 type="text"
                                 placeholder="Product Description"

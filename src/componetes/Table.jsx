@@ -19,10 +19,12 @@ const Table = () => {
     const [productData, setProductData] = useState([]);
     const [modal, setModal] = useState(false);
     const [crudNum, setCrudNum] = useState(0);
+    const [search, setSearch] = useState('');
+    const [order, setOrder] = useState('ASC');
+
     const Toggle = () => setModal(!modal);
     const dbCollection = collection(db, 'productes');
 
-    console.log(productId);
     useEffect(() => {
         if (productId) {
             const product = productData.find(
@@ -30,30 +32,33 @@ const Table = () => {
             );
             setSelectedProduct(product);
         } else {
-            // Handle the case when productId is not available or invalid
             setSelectedProduct(null);
         }
     }, [productId, productData]);
 
-    useEffect(
-        () =>
-            onSnapshot(dbCollection, (snapData) => {
-                setProductData(
-                    snapData.docs.map((doc) => ({
-                        ...doc.data(),
-                        id: doc.id,
-                    }))
-                );
-            }),
-        []
-    );
+    useEffect(() => {
+        onSnapshot(dbCollection, (snapData) => {
+            setProductData(
+                snapData.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id,
+                }))
+            );
+        });
+    }, []);
+    useEffect(() => {
+        productData.length === 0 ? '' : setProductId(productData[0].id);
+    }, [productData]);
 
     return (
         <div className="app__table">
             <div className="table_header">
                 <p>Producs</p>
                 <div>
-                    <input placeholder="products" />
+                    <input
+                        placeholder="products"
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
                     <button
                         className="add_new clickme"
                         onClick={() => {
@@ -79,69 +84,103 @@ const Table = () => {
                     </thead>
 
                     <tbody>
-                        {productData.map((product, index) => {
-                            if (product) {
-                                return (
-                                    <tr key={index}>
-                                        <td data-cell="No.">{index + 1}</td>
-                                        <td data-cell="Name">{product.name}</td>
-                                        <td data-cell="Price">{`${product.price}  Birr`}</td>
-                                        <td data-cell="Quantity">
-                                            {product.quantity}
-                                        </td>
-                                        <td
-                                            data-cell="Availability"
-                                            className={
-                                                product.quantity === '0'
-                                                    ? 'available'
-                                                    : 'unavailable'
-                                            }
-                                        >
-                                            {product.quantity === '0'
-                                                ? 'out Stock'
-                                                : 'in stock'}{' '}
-                                        </td>
-                                        <td data-cell="Action">
-                                            <button
-                                                className="clickme"
-                                                onClick={() => {
-                                                    Toggle();
-                                                    setCrudNum(2);
-                                                    setProductId(product.id);
-                                                }}
-                                            >
-                                                <BiDetail />
-                                            </button>
-                                            <button
-                                                className="clickme"
-                                                onClick={() => {
-                                                    Toggle();
-                                                    setCrudNum(3);
-                                                    setProductId(product.id);
-                                                }}
-                                            >
-                                                <FaEdit />
-                                            </button>
-                                            <button
-                                                className="clickme"
-                                                onClick={() => {
-                                                    Toggle();
-                                                    setCrudNum(4);
-                                                    setProductId(product.id);
-                                                }}
-                                            >
-                                                <MdDeleteForever />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            } else {
-                                return null;
-                            }
-                        })}
+                        {productData.length === 0 ? (
+                            <tr>
+                                <td
+                                    colSpan="6"
+                                    rowSpan="2"
+                                    className="td_color"
+                                >
+                                    There is no product yet, please add some
+                                </td>
+                            </tr>
+                        ) : (
+                            productData
+                                .filter((item) => {
+                                    return search.toLowerCase() === ''
+                                        ? item
+                                        : item.name
+                                              .toLowerCase()
+                                              .includes(search.toLowerCase());
+                                })
+                                .map((product, index) => {
+                                    if (product) {
+                                        return (
+                                            <tr key={index}>
+                                                <td data-cell="No.">
+                                                    {index + 1}
+                                                </td>
+                                                <td data-cell="Name">
+                                                    {product.name}
+                                                </td>
+                                                <td data-cell="Price">{`${product.price}  Birr`}</td>
+                                                <td data-cell="Quantity">
+                                                    {product.quantity}
+                                                </td>
+                                                <td data-cell="Availability">
+                                                    <p
+                                                        className={
+                                                            product.quantity ===
+                                                            '0'
+                                                                ? 'unavailable'
+                                                                : 'available'
+                                                        }
+                                                    >
+                                                        {product.quantity ===
+                                                        '0'
+                                                            ? 'out Stock'
+                                                            : 'in stock'}{' '}
+                                                    </p>
+                                                </td>
+                                                <td data-cell="Action">
+                                                    <button
+                                                        className="clickme"
+                                                        onClick={() => {
+                                                            Toggle();
+                                                            setCrudNum(2);
+                                                            setProductId(
+                                                                product.id
+                                                            );
+                                                        }}
+                                                    >
+                                                        <BiDetail />
+                                                    </button>
+                                                    <button
+                                                        className="clickme"
+                                                        onClick={() => {
+                                                            Toggle();
+                                                            setCrudNum(3);
+                                                            setProductId(
+                                                                product.id
+                                                            );
+                                                        }}
+                                                    >
+                                                        <FaEdit />
+                                                    </button>
+                                                    <button
+                                                        className="clickme"
+                                                        onClick={() => {
+                                                            Toggle();
+                                                            setCrudNum(4);
+                                                            setProductId(
+                                                                product.id
+                                                            );
+                                                        }}
+                                                    >
+                                                        <MdDeleteForever />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    } else {
+                                        return null;
+                                    }
+                                })
+                        )}
                     </tbody>
                 </table>
             </div>
+
             <Add show={modal} crudNum={crudNum} close={Toggle} />
             <Detail
                 show={modal}

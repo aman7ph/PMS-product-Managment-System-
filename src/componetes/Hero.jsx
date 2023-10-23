@@ -11,7 +11,7 @@ const Hero = () => {
                     The product <span>management</span> system that helps you{' '}
                     <span>succeed</span>
                 </h2>
-                <Link to="/login">login</Link>
+                <Link to="/login">GET STARTED</Link>
             </div>
             <div className="app__hero-img">
                 <img src="hero.png" alt="hero" />

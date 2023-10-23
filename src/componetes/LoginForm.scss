@@ -1,13 +1,15 @@
-.app__login {
+.app__login-body {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 430px;
     width: 100%;
-    background: var(--secondary-color);
+
+    background-color: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(5px);
     border-radius: 7px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 5px 10px rgba(0, 0, 99, 0.3);
 
     @media screen and (max-width: 450px) {
         width: 80%;
@@ -21,17 +23,18 @@
         font-weight: 500;
         text-align: center;
         margin-bottom: 1.5rem;
-        color: #fff;
+        color: var(--secondary-color);
     }
 
     input {
-        color: #fff;
+        color: var(--secondary-color);
         height: 60px;
         width: 100%;
         padding: 0 15px;
         font-size: 17px;
         margin-bottom: 1.3rem;
-        background: var(--secondary-color);
+        background: rgba(255, 255, 255, 0.35);
+        backdrop-filter: blur(5px);
         border: 1px solid #ddd;
         border-radius: 6px;
         outline: none;
@@ -40,7 +43,7 @@
             box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
         }
         &::placeholder {
-            color: #fff;
+            color: var(--secondary-color);
         }
     }
     input.button {
