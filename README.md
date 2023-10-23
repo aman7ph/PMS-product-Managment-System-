@@ -5,3 +5,7 @@ The Product Management System is a versatile tool designed to empower users with
 
 # demo
 https://pms-product-managment-system.vercel.app/
+
+use this password and email
+email : user12@gmail.com
+password : 970245
